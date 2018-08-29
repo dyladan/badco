@@ -6,3 +6,5 @@
   (str (rand-nth [
     "Eh, I don't know. Maybe rain?"
     "It looks cloudy here, but I'm not sure."])))
+
+(def skill {"IntentRequest" invoke})

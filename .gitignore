@@ -11,3 +11,10 @@ pom.xml
 express.js
 lambda.js
 node_modules
+
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless

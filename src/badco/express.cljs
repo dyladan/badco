@@ -1,33 +1,31 @@
 (ns badco.express
   (:require [cljs.nodejs :as n]
             [taoensso.timbre :as log]
-            [badco.skills.weatherman :as weatherman]))
-
-(def json (.-json (n/require "body-parser")))
+            [badco.skills :as skills]))
 
 (def app ((n/require "express")))
 
-(defn handler
-  "doc"
+(if (= (aget js/process "env" "NODE_ENV") "production")
+  (.use app (n/require "alexa-verifier-middleware")))
+
+(defn alexa
+  "Dispatch incoming calls to the alexa skill handler"
   [req res]
-  (. res (send (weatherman/invoke))))
+  (.send res (skills/alexa (.-body req))))
 
 (defn server-started-callback
   "Callback triggered when ExpressJS server has started"
   [req]
   (log/info "App started on port: 3000"))
 
-(defn request-logger
-  "Log all POST requests"
-  [req res next]
-  (log/info "POST received")
-  (next))
-
 (defn -main
+  "Application startup"
   [& args]
   (doto app
-    (.use (json))
-    (.post "/" handler)
+    ; (.use (n/require "alexa-verifier-middleware"))
+    (.use (.json (n/require "body-parser")))
+    (.post "/alexa" alexa)
     (.listen 3000  server-started-callback)))
 
 (set! *main-cli-fn* -main)
+

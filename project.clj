@@ -20,11 +20,13 @@
                                    :output-to "express.js"
                                    :output-dir "target/js/compiled/express"
                                    :main badco.express
-                                   :optimizations :simple}}
+                                   :parallel-build true
+                                   :optimizations :none}}
                        {:id "lambda"
                         :source-paths ["src"]
                         :compiler {:target :nodejs
                                    :output-to "lambda.js"
                                    :output-dir "target/js/compiled/lambda"
                                    :main badco.lambda
-                                   :optimizations :simple}}]})
+                                   :parallel-build true
+                                   :optimizations :none}}]})
